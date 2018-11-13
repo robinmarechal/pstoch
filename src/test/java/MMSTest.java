@@ -6,8 +6,9 @@ public class MMSTest {
 
     @Test
     public void p0() {
-        assertTrue(true);
-        assertTrue(true);
+        MMS mms = new MMS();
+        assertEquals(mms.P0(10,12,2),0.41, 0.0001);
+        assertEquals(mms.P0(4,0.8,6),0.0045,0.0001);
     }
 
     @Test

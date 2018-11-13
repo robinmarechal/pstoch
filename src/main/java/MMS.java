@@ -1,12 +1,12 @@
 public class MMS {
 
     public double P0(double lambda, double mu, int S) {
-        double rho = lambda/(S*mu);
+        double rho = lambda/((double)S*mu);
         double somme = 0;
         for(int i=0; i <S-1;i++){
-            somme += Math.pow(rho,i)/ MyMaths.facto(i);
+            somme += Math.pow(rho,i)/ (double)MyMaths.facto(i);
         }
-        return 1/(somme + (Math.pow(rho,S)/ MyMaths.facto(S))*(1/(1-rho/S)));
+        return 1/(somme + (Math.pow(rho,S)/ (double)MyMaths.facto(S))*(1/(1-rho/(double)S)));
     }
 
     public double Pa(double lambda, double mu, int S){
