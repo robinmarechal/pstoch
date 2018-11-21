@@ -16,8 +16,13 @@ public class App extends Application {
         window.setTitle("Processus stochastiques - Fanch Brault & Robin Maréchal");
         window.setOnCloseRequest(event -> System.exit(0));
         window.setScene(Template.instance);
-        window.show();
+
+//        window.setWidth(800);
+//        window.setHeight(500);
 
         window.centerOnScreen();
+
+        window.show();
+
     }
 }

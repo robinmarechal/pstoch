@@ -1,0 +1,10 @@
+.btn {
+    -fx-padding: 15 20 15 20;
+    -fx-font-size: 16;
+    -fx-cursor: hand;
+    -fx-alignment: center;
+}
+
+.p-16 {
+    -fx-padding: 16px;
+}
