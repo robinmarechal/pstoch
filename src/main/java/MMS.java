@@ -1,47 +1,39 @@
 public class MMS {
 
-    public double P0(double lambda, double mu, int S) {
-        double rho = lambda/((double)S*mu);
+    public double Q0(double lambda, double mu, int S) {
+        double rho = lambda/(S*mu);
         double somme = 0;
-        for(int i=0; i <S-1;i++){
-            somme += Math.pow(rho,i)/ (double)MyMaths.facto(i);
+        for(int i=0; i <= S-1;i++){
+            somme += Math.pow(rho*S,i)/MyMaths.facto(i);
         }
-        return 1/(somme + (Math.pow(rho,S)/ (double)MyMaths.facto(S))*(1/(1-rho/(double)S)));
+        return 1/(somme + (Math.pow(rho*S,S))/(MyMaths.facto(S)*(1-rho)));
     }
 
-    public double Pa(double lambda, double mu, int S){
+    public double Lq(double lambda, double mu, int S){
         double rho = lambda/(S*mu);
-        double P0 = P0(lambda, mu, S);
-        return P0*(Math.pow(rho,S)/(MyMaths.facto(S-1)*(S-rho)));
+        double q0 = Q0(lambda, mu, S);
+        return q0*((Math.pow(rho*S,S)*rho)/(MyMaths.facto(S)*Math.pow(1-rho,2)));
     }
 
-    public double N(double lambda, double mu, int S){
-        double Pa = Pa(lambda, mu, S);
-        double rho = lambda/(S*mu);
-        return rho*(1+(Pa/(S-rho)));
+    public double L(double lambda, double mu, int S){
+        double lq = Lq(lambda,mu,S);
+        return lq+(lambda/mu);
     }
 
-    public double Na(double lambda, double mu, int S){
-        double Pa = Pa(lambda, mu, S);
-        double rho = lambda/(S*mu);
-        return rho*(Pa/(S-rho));
+    public double Wq(double lambda, double mu, int S){
+        double lq = Lq(lambda,mu,S);
+        return lq/lambda;
     }
 
-    public double T(double lambda, double mu, int S){
-        double Pa = Pa(lambda, mu, S);
-        double rho = lambda/(S*mu);
-        return (1/mu)*(1+(Pa/(S-rho)));
+    public double W(double lambda, double mu, int S){
+        double wq = Wq(lambda,mu,S);
+        return wq + (1/mu);
     }
 
-    public double Ta(double lambda, double mu, int S){
-        double Pa = Pa(lambda, mu, S);
-        double rho = lambda/(S*mu);
-        return Pa/(mu*(S-rho));
-    }
-
-    public boolean engorgement(double lambda, double mu, int S){
-        if(lambda/(S*mu) < 1)
-            return true;
-        else return false;
+    public int engorgement(double lambda, double mu){
+        int i = 1;
+        while(lambda/(i*mu)>1)
+            i++;
+        return i;
     }
 }
