@@ -1,8 +1,8 @@
-package ui;
+package simulator.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
-import ui.views.ViewReference;
+import simulator.ui.views.ViewReference;
 
 import java.io.IOException;
 

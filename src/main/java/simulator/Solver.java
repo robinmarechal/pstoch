@@ -1,3 +1,5 @@
+package simulator;
+
 public interface Solver
 {
     void setSimuation(Simulation simulation);
@@ -7,5 +9,5 @@ public interface Solver
     double Lq();
     double W();
     double Wq();
-    int engorgement();
+    int bottleNeck();
 }

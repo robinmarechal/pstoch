@@ -1,8 +1,8 @@
-package ui;
+package simulator.ui;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import lib.ui.Template;
+import simulator.lib.ui.Template;
 
 public class App extends Application {
 

@@ -4,14 +4,13 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="ui.views.controller.HomeController"
-      stylesheets="/ui/styles/style.css"
+      fx:controller="simulator.ui.views.controller.ResultsController"
+      stylesheets="/simulator/ui/styles/style.css"
       alignment="CENTER"
       fillWidth="true">
 
-    <Button text="Nouvelle simulation"
-            styleClass="btn"
-            onAction="#newSimulation">
+    <Button text="4"
+            styleClass="btn">
     </Button>
 
 </VBox>
