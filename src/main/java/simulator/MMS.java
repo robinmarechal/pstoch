@@ -1,80 +1,95 @@
 package simulator;
 
-public class MMS implements Solver
-{
+import simulator.lib.exception.QueueingException;
+import simulator.lib.exception.enums.QueueingExceptionType;
 
-    private Simulation simulation;
+public class MMS extends WaitingQueueSolver
+{
+    private double calcRho (double lambda, double mu, int S) {
+        return lambda / (S * mu);
+    }
 
     double calcQ0 (double lambda, double mu, int S) {
-        double rho = lambda / (S * mu);
+        double rho = this.calcRho(lambda, mu, S);
+        if (rho >= 1) {
+            throw new QueueingException("lambda can't be greater or equal to s*mu", QueueingExceptionType.RHO_GT_1);
+        }
+
         double somme = 0;
         for (int i = 0; i <= S - 1; i++) {
             somme += Math.pow(rho * S, i) / MyMaths.facto(i);
         }
-        return 1 / (somme + (Math.pow(rho * S, S)) / (MyMaths.facto(S) * (1 - rho)));
+        double q0 = 1 / (somme + (Math.pow(rho * S, S)) / (MyMaths.facto(S) * (1 - rho)));
+
+        return q0;
     }
 
     double calcLq (double lambda, double mu, int S) {
-        double rho = lambda / (S * mu);
+        double rho = this.calcRho(lambda, mu, S);
         double q0 = calcQ0(lambda, mu, S);
-        return q0 * ((Math.pow(rho * S, S) * rho) / (MyMaths.facto(S) * Math.pow(1 - rho, 2)));
+        double Lq = q0 * ((Math.pow(rho * S, S) * rho) / (MyMaths.facto(S) * Math.pow(1 - rho, 2)));
+
+        return Lq;
     }
 
     double calcL (double lambda, double mu, int S) {
         double lq = calcLq(lambda, mu, S);
-        return lq + (lambda / mu);
+        double L = lq + (lambda / mu);
+        return L;
     }
 
     double calcWq (double lambda, double mu, int S) {
         double lq = calcLq(lambda, mu, S);
-        return lq / lambda;
+        double Wq = lq / lambda;
+        return Wq;
     }
 
     double calcW (double lambda, double mu, int S) {
         double wq = calcWq(lambda, mu, S);
-        return wq + (1 / mu);
+        double W = wq + (1 / mu);
+        return W;
     }
 
     int calcBottleNeck (double lambda, double mu) {
-        int i = 1;
-        while (lambda / (i * mu) > 1) {
-            i++;
+        int s = 1;
+        while (calcRho(lambda, mu, s) >= 1) {
+            s++;
         }
-        return i;
+        return s;
     }
 
     @Override
-    public void setSimuation (Simulation simulation) {
-        this.simulation = simulation;
+    public double rho () {
+        return calcRho(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.s());
     }
 
     @Override
     public double Q0 () {
-        return calcQ0(simulation.LAMBDA, simulation.MU, simulation.S);
+        return calcQ0(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.s());
     }
 
     @Override
     public double L () {
-        return calcL(simulation.LAMBDA, simulation.MU, simulation.S);
+        return calcL(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.s());
     }
 
     @Override
     public double Lq () {
-        return calcLq(simulation.LAMBDA, simulation.MU, simulation.S);
+        return calcLq(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.s());
     }
 
     @Override
     public double W () {
-        return calcW(simulation.LAMBDA, simulation.MU, simulation.S);
+        return calcW(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.s());
     }
 
     @Override
     public double Wq () {
-        return calcWq(simulation.LAMBDA, simulation.MU, simulation.S);
+        return calcWq(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.s());
     }
 
     @Override
     public int bottleNeck () {
-        return calcBottleNeck(simulation.LAMBDA, simulation.MU);
+        return calcBottleNeck(this.convertLambdaToMuTimeUnit(), simulation.mu());
     }
 }

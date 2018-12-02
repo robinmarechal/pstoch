@@ -1,13 +1,16 @@
 package simulator;
 
-import simulator.lib.QueueingException;
+import simulator.lib.exception.QueueingException;
+import simulator.lib.exception.enums.QueueingExceptionType;
 
-public class MM1K implements Solver {
+public class MM1K extends WaitingQueueSolver {
 
-    private Simulation simulation;
+    double calcRho (double lambda, double mu) {
+        return lambda/mu;
+    }
 
-    public double calcQ0 (double lambda, double mu, int K){
-        double rho = lambda/mu;
+    double calcQ0 (double lambda, double mu, int K){
+        double rho = this.calcRho(lambda, mu);
         if(rho == 1){
             return 1/(K-1);
         }
@@ -33,37 +36,37 @@ public class MM1K implements Solver {
     }
 
     @Override
-    public void setSimuation (Simulation simulation) {
-        this.simulation= simulation;
+    public double rho () {
+        return calcRho(this.convertLambdaToMuTimeUnit(), simulation.mu());
     }
 
     @Override
     public double Q0 () {
-        return this.calcQ0(simulation.LAMBDA, simulation.MU, simulation.K);
+        return calcQ0(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.k());
     }
 
     @Override
     public double L () {
-        return this.calcL(simulation.LAMBDA, simulation.MU, simulation.K);
+        return calcL(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.k());
     }
 
     @Override
     public double Lq () {
-        return this.calcLq(simulation.LAMBDA, simulation.MU, simulation.K);
+        return calcLq(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.k());
     }
 
     @Override
     public double W () {
-        return this.calcW(simulation.LAMBDA, simulation.MU, simulation.K);
+        return calcW(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.k());
     }
 
     @Override
     public double Wq () {
-        return this.calcWq(simulation.LAMBDA, simulation.MU, simulation.K);
+        return calcWq(this.convertLambdaToMuTimeUnit(), simulation.mu(), simulation.k());
     }
 
     @Override
     public int bottleNeck () {
-        throw new QueueingException("No bottleneck possibility with this kind of queues.");
+        throw new QueueingException("No bottleneck possibility with this kind of queues.", QueueingExceptionType.NO_POSSIBLE_BOTTLENECK);
     }
 }

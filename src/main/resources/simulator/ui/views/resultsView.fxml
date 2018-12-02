@@ -1,16 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="simulator.ui.views.controller.ResultsController"
-      stylesheets="/simulator/ui/styles/style.css"
-      alignment="CENTER"
-      fillWidth="true">
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import simulator.lib.*?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="simulator.ui.views.controller.ResultsController"
+          stylesheets="/simulator/ui/styles/style.css"
+          maxWidth="Infinity"
+          prefHeight="400"
+          hgap="10"
+          vgap="10">
 
-    <Button text="4"
-            styleClass="btn">
-    </Button>
+    <padding>
+        <Insets bottom="15"/>
+    </padding>
 
-</VBox>
+    <columnConstraints>
+        <ColumnConstraints prefWidth="380" halignment="RIGHT" maxWidth="Infinity" hgrow="ALWAYS"/>
+        <ColumnConstraints prefWidth="120" halignment="LEFT" maxWidth="Infinity" hgrow="ALWAYS"/>
+    </columnConstraints>
+
+    <HBox spacing="5" alignment="CENTER" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="Unité de temps : " alignment="BOTTOM_CENTER" prefHeight="20"/>
+        <ComboBox fx:id="timeUnitChoice" prefHeight="20">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <TimeUnit fx:value="SECOND"/>
+                    <TimeUnit fx:value="MINUTE"/>
+                    <TimeUnit fx:value="HOUR"/>
+                    <TimeUnit fx:value="DAY"/>
+                    <TimeUnit fx:value="WEEK"/>
+                    <TimeUnit fx:value="MONTH"/>
+                    <TimeUnit fx:value="YEAR"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+
+        <padding>
+            <Insets top="15" bottom="10"/>
+        </padding>
+    </HBox>
+
+    <Label text="Nombre moyen de clients dans le système : " GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <tooltip>
+            <Tooltip text="Nombre moyen de clients dans le système (queue + guichet)"/>
+        </tooltip>
+    </Label>
+    <Label fx:id="lLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+    <Label text="Nombre moyen de clients dans la queue : " GridPane.columnIndex="0" GridPane.rowIndex="3">
+        <tooltip>
+            <Tooltip text="Nombre moyen de clients dans la queue, sans compter les guichets"/>
+        </tooltip>
+    </Label>
+    <Label fx:id="lqLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <Label text="Temps moyen passé par un client dans le système : " GridPane.columnIndex="0" GridPane.rowIndex="4">
+        <tooltip>
+            <Tooltip text="Durée moyenne d'attente d'un client dans le système (queue + guichet)"/>
+        </tooltip>
+    </Label>
+    <Label fx:id="wLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+    <Label text="Temps moyen d'attente d'un client dans la queue : " GridPane.columnIndex="0" GridPane.rowIndex="5">
+        <tooltip>
+            <Tooltip text="Durée moyenne d'attente d'un client dans la queue, sans compter les guichets"/>
+        </tooltip>
+    </Label>
+    <Label fx:id="wqLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+    <Label text="Taux moyen d'utilisation de chaque guichet : " GridPane.columnIndex="0" GridPane.rowIndex="6">
+        <tooltip>
+            <Tooltip text="Pourcentage de temps qu'un serveur est utilisé par un client."/>
+        </tooltip>
+    </Label>
+    <Label fx:id="rhoLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+    <Label text="Nombre de serveurs minimum : " GridPane.columnIndex="0" GridPane.rowIndex="7">
+        <tooltip>
+            <Tooltip text="Le nombre de serveurs nécessaire au minimum pour que la file ne grandisse pas indéfiniment"/>
+        </tooltip>
+    </Label>
+    <Label fx:id="minServersLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+</GridPane>

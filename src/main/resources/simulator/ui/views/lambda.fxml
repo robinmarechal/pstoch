@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import simulator.lib.*?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="simulator.ui.views.controller.LambdaController"
+      stylesheets="/simulator/ui/styles/style.css"
+      styleClass="label-and-field"
+      spacing="10"
+      alignment="CENTER">
+
+    <Label alignment="CENTER" textAlignment="CENTER" text="Nombre moyen d'arrivées par période"/>
+
+    <HBox spacing="10"
+          alignment="CENTER">
+
+        <TextField fx:id="nbArrivalsField" promptText="Nombre d'arrivées" text="1" styleClass="tf-param"/>
+        <Label text="par"/>
+        <ComboBox fx:id="periodChoice">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <TimeUnit fx:value="SECOND"/>
+                    <TimeUnit fx:value="MINUTE"/>
+                    <TimeUnit fx:value="HOUR"/>
+                    <TimeUnit fx:value="DAY"/>
+                    <TimeUnit fx:value="WEEK"/>
+                    <TimeUnit fx:value="MONTH"/>
+                    <TimeUnit fx:value="YEAR"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+    </HBox>
+</VBox>

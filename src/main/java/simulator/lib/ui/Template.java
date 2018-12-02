@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import simulator.Simulation;
 import simulator.ui.ViewLoader;
 import simulator.ui.views.ViewReference;
 
@@ -23,18 +22,18 @@ public class Template extends Scene
 {
     public final static Template instance = new Template();
 
-    public final static int FRAME_WIDTH = 800;
-    public final static int FRAME_HEIGHT = 500;
+    public final static int FRAME_WIDTH = 600;
+    public final static int FRAME_HEIGHT = 360;
 
     public final static double MAX_HEIGHT = 8192;
     public final static double MAX_WIDTH = 8192;
 
-    public final static int NB_STEPS = 5;
+    private int nbSteps;
 
     private SimpleIntegerProperty step = new SimpleIntegerProperty(-1);
 
-    private final Label titleLabel;
-    private final HBox prevNextButtonsRow;
+    private Label titleLabel;
+    private HBox prevNextButtonsRow;
 
     private BorderPane layout;
 
@@ -42,26 +41,10 @@ public class Template extends Scene
     private Button nextBtn;
     private Pane[] stepViews;
 
-    public Template () {
+    private Runnable resultsReloader;
+
+    private Template () {
         super(new BorderPane());
-
-        prepareStepViews();
-
-        layout = (BorderPane) this.getRoot();
-        layout.setPadding(new Insets(32, 64, 32, 64));
-        //        layout.setPrefWidth(FRAME_WIDTH);
-        //        layout.setPrefHeight(FRAME_HEIGHT);
-
-        titleLabel = buildTitle();
-        prevNextButtonsRow = builtPrevNexButtons();
-
-        layout.setTop(titleLabel);
-        layout.setBottom(prevNextButtonsRow);
-
-        step.addListener((observable, oldValue, newValue) -> updateMiddleRow(newValue.intValue()));
-        step.addListener((observable, oldValue, newValue) -> updatePrevNext(newValue.intValue()));
-
-        step.setValue(0);
     }
 
     private void prepareStepViews () {
@@ -69,16 +52,17 @@ public class Template extends Scene
                 ViewLoader.load(ViewReference.HOME),
                 ViewLoader.load(ViewReference.NB_SERVERS),
                 ViewLoader.load(ViewReference.MAX_QUEUE_CAPACITY),
-                ViewLoader.load(ViewReference.PARAMETERS),
-                null
+                ViewLoader.load(ViewReference.LAMBDA),
+                ViewLoader.load(ViewReference.MU),
+                ViewLoader.load(ViewReference.RESULTS)
         };
+
+        nbSteps = stepViews.length;
     }
 
     private void updateMiddleRow (int newStep) {
-
-        if (newStep == NB_STEPS - 1) {
-            Simulation.instance.solve();
-            stepViews[newStep] = ViewLoader.load(ViewReference.RESULTS);
+        if (newStep == nbSteps - 1) {
+            this.resultsReloader.run();
         }
 
         layout.setCenter(stepViews[newStep]);
@@ -120,7 +104,7 @@ public class Template extends Scene
                 disableButton(prevBtn);
                 enableButton(nextBtn);
             }
-            else if (newValue == NB_STEPS - 1) {
+            else if (newValue == nbSteps - 1) {
                 disableButton(nextBtn);
                 enableButton(prevBtn);
             }
@@ -142,7 +126,7 @@ public class Template extends Scene
     }
 
     private Label buildTitle () {
-        Label label = new Label("F&R's Waiting Queues Theory Simulator");
+        Label label = new Label("Simulateur de files d'attente");
 
         label.setFont(Font.font(22));
         label.setAlignment(Pos.CENTER);
@@ -155,5 +139,31 @@ public class Template extends Scene
 
     public void startSimulation () {
         this.step.setValue(1);
+    }
+
+    public void setOnResultsReload (Runnable callable) {
+        this.resultsReloader = callable;
+    }
+
+    public void load () {
+        prepareStepViews();
+
+        layout = (BorderPane) this.getRoot();
+        layout.setPadding(new Insets(32));
+        layout.setPrefWidth(FRAME_WIDTH);
+        layout.setPrefHeight(FRAME_HEIGHT);
+
+        titleLabel = buildTitle();
+        prevNextButtonsRow = builtPrevNexButtons();
+
+        layout.setTop(titleLabel);
+        layout.setBottom(prevNextButtonsRow);
+
+        step.addListener((observable, oldValue, newValue) -> updateMiddleRow(newValue.intValue()));
+        step.addListener((observable, oldValue, newValue) -> updatePrevNext(newValue.intValue()));
+
+//        step.setValue(nbSteps - 1);
+        step.setValue(0);
+
     }
 }

@@ -5,8 +5,10 @@ public enum ViewReference
     HOME("home"),
     MAX_QUEUE_CAPACITY("maxQueueCapacityView"),
     NB_SERVERS("serversView"),
-    PARAMETERS("parametersView"),
+    LAMBDA("lambda"),
+    MU("mu"),
     RESULTS("resultsView")
+
     ;
 
     public final String filename;

@@ -12,3 +12,11 @@
 .p-16 {
     -fx-padding: 16px;
 }
+
+.tf-param{
+    -fx-pref-width: 80;
+}
+
+.test{
+  -fx-background-color: #000;
+}

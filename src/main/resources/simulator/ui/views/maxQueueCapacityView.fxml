@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.VBox?>
-<VBox xmlns="http://javafx.com/javafx"
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="simulator.ui.views.controller.MaxQueueCapacityController"
       stylesheets="/simulator/ui/styles/style.css"
-      alignment="CENTER"
-      fillWidth="true">
+      styleClass="label-and-field"
+      spacing="10"
+      alignment="CENTER">
 
-    <Button text="2"
-            styleClass="btn">
-    </Button>
+    <Label text="Taille maximale de la queue (0 si aucune limite) :"/>
+    <TextField fx:id="field" text="0" styleClass="tf-param"/>
 
-</VBox>
+</HBox>
