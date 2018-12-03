@@ -7,12 +7,25 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'ProcStoch',
+                'Implementation-Version': version,
+                'Main-Class': 'simulator.ui.App'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile files('simulator.lib/javafx.jar')
+    compile files('./lib/javafx.jar')
 }
