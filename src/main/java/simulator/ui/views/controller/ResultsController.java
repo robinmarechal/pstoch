@@ -94,7 +94,7 @@ public class ResultsController
             if (e.getType() == QueueingExceptionType.RHO_GT_1) {
                 content = "Le rapport (Arrivées ÷ (Services * Guichets)) est supérieur ou égal 1.\n";
                 content += "Cela signifie que les clients arrivent trop vite par rapport au temps\n";
-                content += "de servive, la file s'étend donc jusqu'à l'infini\n";
+                content += "de service, la file s'étend donc jusqu'à l'infini\n";
                 content += "Il faut donc augmenter le nombre de serveurs, le nombre de services\n";
                 content += "ou diminuer le nombre d'arrivées.";
 
