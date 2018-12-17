@@ -23,7 +23,7 @@ public class Template extends Scene
     public final static Template instance = new Template();
 
     public final static int FRAME_WIDTH = 600;
-    public final static int FRAME_HEIGHT = 360;
+    public final static int FRAME_HEIGHT = 400;
 
     public final static double MAX_HEIGHT = 8192;
     public final static double MAX_WIDTH = 8192;
@@ -49,11 +49,7 @@ public class Template extends Scene
 
     private void prepareStepViews () {
         stepViews = new Pane[]{
-                ViewLoader.load(ViewReference.HOME),
-                ViewLoader.load(ViewReference.NB_SERVERS),
-                ViewLoader.load(ViewReference.MAX_QUEUE_CAPACITY),
-                ViewLoader.load(ViewReference.LAMBDA),
-                ViewLoader.load(ViewReference.MU),
+                ViewLoader.load(ViewReference.INPUTS),
                 ViewLoader.load(ViewReference.RESULTS)
         };
 
@@ -81,37 +77,23 @@ public class Template extends Scene
 
         HBox row = new HBox(10, prevBtn, nextBtn);
         row.setAlignment(Pos.CENTER);
+        row.setPadding(new Insets(30, 0, 0, 0));
 
         return row;
     }
 
     private void updatePrevNext (int newValue) {
         if (newValue == 0) {
-            prevBtn.setOpacity(0);
-            nextBtn.setOpacity(0);
-
-            nextBtn.setDisable(true);
-            prevBtn.setDisable(true);
+            disableButton(prevBtn);
+            enableButton(nextBtn);
         }
-        else {
-            prevBtn.setOpacity(1);
-            nextBtn.setOpacity(1);
-
-            nextBtn.setDisable(false);
-            prevBtn.setDisable(false);
-
-            if (newValue == 1) {
-                disableButton(prevBtn);
-                enableButton(nextBtn);
-            }
-            else if (newValue == nbSteps - 1) {
-                disableButton(nextBtn);
-                enableButton(prevBtn);
-            }
-            else {
-                enableButton(prevBtn);
-                enableButton(nextBtn);
-            }
+        else if (newValue > 0 && newValue < nbSteps - 1){
+            enableButton(prevBtn);
+            enableButton(nextBtn);
+        }
+        else{
+            disableButton(nextBtn);
+            enableButton(prevBtn);
         }
     }
 
@@ -128,10 +110,9 @@ public class Template extends Scene
     private Label buildTitle () {
         Label label = new Label("Simulateur de files d'attente");
 
-        label.setFont(Font.font(22));
+        label.setFont(Font.font(26));
         label.setAlignment(Pos.CENTER);
         label.setTextAlignment(TextAlignment.CENTER);
-        //        label.setPadding(new Insets(0, 0, 32, 0));
         label.setMaxWidth(MAX_WIDTH);
 
         return label;
@@ -151,7 +132,6 @@ public class Template extends Scene
         layout = (BorderPane) this.getRoot();
         layout.setPadding(new Insets(32));
         layout.setPrefWidth(FRAME_WIDTH);
-        layout.setPrefHeight(FRAME_HEIGHT);
 
         titleLabel = buildTitle();
         prevNextButtonsRow = builtPrevNexButtons();
@@ -159,11 +139,11 @@ public class Template extends Scene
         layout.setTop(titleLabel);
         layout.setBottom(prevNextButtonsRow);
 
-        step.addListener((observable, oldValue, newValue) -> updateMiddleRow(newValue.intValue()));
-        step.addListener((observable, oldValue, newValue) -> updatePrevNext(newValue.intValue()));
+        step.addListener((observable, oldValue, newValue) -> {
+            updateMiddleRow(newValue.intValue());
+            updatePrevNext(newValue.intValue());
+        });
 
-//        step.setValue(nbSteps - 1);
         step.setValue(0);
-
     }
 }
