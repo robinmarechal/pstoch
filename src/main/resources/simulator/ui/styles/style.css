@@ -5,7 +5,7 @@
     -fx-alignment: center;
 }
 
-.middleBox{
+.middleBox {
     -fx-padding: 40 30 30 30;
 }
 
@@ -13,10 +13,20 @@
     -fx-padding: 16px;
 }
 
-.tf-param{
-    -fx-pref-width: 80;
+.tf-param {
+    -fx-pref-width: 120;
+    -fx-max-width: 120;
 }
 
-.test{
-  -fx-background-color: #000;
+.test {
+    -fx-background-color: #000;
+}
+
+.form-label {
+    -fx-font-weight: bold;
+}
+
+.help-label {
+    -fx-font-size: 12;
+    -fx-font-style: italic;
 }

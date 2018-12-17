@@ -1,12 +1,11 @@
 package simulator.ui.views.controller;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import simulator.Simulation;
 import simulator.WaitingQueueSolver;
@@ -18,6 +17,8 @@ import simulator.lib.ui.Template;
 
 public class ResultsController
 {
+    private static final String RED_COLOR_CLASS = "text-red";
+
     @FXML private ComboBox<TimeUnit> timeUnitChoice;
     @FXML private Label lLabel;
     @FXML private Label lqLabel;
@@ -25,13 +26,9 @@ public class ResultsController
     @FXML private Label wqLabel;
     @FXML private Label rhoLabel;
     @FXML private Label minServersLabel;
+    @FXML private Label minServersTextLabel;
 
     private TimeUnit timeUnit = Simulation.DEFAULT_MU_TIME_UNIT;
-
-    private DoubleProperty l = new SimpleDoubleProperty(0);
-    private DoubleProperty lq = new SimpleDoubleProperty(0);
-    private DoubleProperty w = new SimpleDoubleProperty(0);
-    private DoubleProperty wq = new SimpleDoubleProperty(0);
 
     public ResultsController () {
         Template.instance.setOnResultsReload(() -> this.updateValues());
@@ -41,7 +38,12 @@ public class ResultsController
     public void initialize () {
         timeUnitChoice.setValue(Simulation.DEFAULT_MU_TIME_UNIT);
         timeUnitChoice.valueProperty().addListener((observable, oldTimeUnit, newTimeUnit) -> {
-            this.convertWAndWq(newTimeUnit);
+            try {
+                this.convertWAndWq(newTimeUnit);
+            }
+            catch (QueueingException e) {
+                // Nothing to do
+            }
         });
     }
 
@@ -58,6 +60,7 @@ public class ResultsController
 
     private void updateValues () {
         Simulation simulation = Simulation.instance;
+        unredifyLabels();
 
         try {
             WaitingQueueSolver solver = (WaitingQueueSolver) simulation.guessSolverInstance();
@@ -95,31 +98,49 @@ public class ResultsController
                 content += "Il faut donc augmenter le nombre de serveurs, le nombre de services\n";
                 content += "ou diminuer le nombre d'arrivées.";
 
-
-                alert(header, content);
+                alert(header, content, Alert.AlertType.WARNING);
             }
             else {
                 e.printStackTrace();
                 minServersLabel.setText("??");
             }
 
+            this.resetLabels();
 
-            lLabel.setText("??");
-            lqLabel.setText("??");
-            wLabel.setText("??");
-            wqLabel.setText("??");
-            rhoLabel.setText("??");
+            redifyLabels();
         }
         catch (NotImplementedException e) {
             String header = "Impossible de résoudre le problème";
             String content = "La fonctionnalité permettant de simuler\n" +
                     "plusieurs guichets avec une file de taille\n" +
                     "limitée n'a pas été implémentée.";
+
+            alert(header, content, Alert.AlertType.ERROR);
+            this.resetLabels();
+            minServersLabel.setText("??");
         }
     }
 
-    public void alert (String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    private void redifyLabels(){
+        minServersLabel.setTextFill(Color.RED);
+        minServersTextLabel.setTextFill(Color.RED);
+    }
+
+    private void unredifyLabels(){
+        minServersLabel.setTextFill(Color.BLACK);
+        minServersTextLabel.setTextFill(Color.BLACK);
+    }
+
+    private void resetLabels(){lLabel.setText("??");
+        lLabel.setText("??");
+        lqLabel.setText("??");
+        wLabel.setText("??");
+        wqLabel.setText("??");
+        rhoLabel.setText("??");
+    }
+
+    public void alert (String header, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
         alert.setHeaderText(header);
         Label label = new Label(content);
         label.setWrapText(true);

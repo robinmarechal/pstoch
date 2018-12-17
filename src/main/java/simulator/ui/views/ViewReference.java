@@ -7,9 +7,8 @@ public enum ViewReference
     NB_SERVERS("serversView"),
     LAMBDA("lambda"),
     MU("mu"),
-    RESULTS("resultsView")
-
-    ;
+    RESULTS("resultsView"),
+    INPUTS("inputs");
 
     public final String filename;
     public final String value;

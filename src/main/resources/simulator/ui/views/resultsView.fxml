@@ -10,9 +10,9 @@
           fx:controller="simulator.ui.views.controller.ResultsController"
           stylesheets="/simulator/ui/styles/style.css"
           maxWidth="Infinity"
-          prefHeight="400"
+          prefHeight="320"
           hgap="10"
-          vgap="10">
+          vgap="20">
 
     <padding>
         <Insets bottom="15"/>
@@ -24,7 +24,7 @@
     </columnConstraints>
 
     <HBox spacing="5" alignment="CENTER" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <Label text="Unité de temps : " alignment="BOTTOM_CENTER" prefHeight="20"/>
+        <Label text="Unité de temps : " alignment="BOTTOM_CENTER" prefHeight="20" styleClass="form-label"/>
         <ComboBox fx:id="timeUnitChoice" prefHeight="20">
             <items>
                 <FXCollections fx:factory="observableArrayList">
@@ -40,7 +40,7 @@
         </ComboBox>
 
         <padding>
-            <Insets top="15" bottom="10"/>
+            <Insets top="30" />
         </padding>
     </HBox>
 
@@ -49,41 +49,41 @@
             <Tooltip text="Nombre moyen de clients dans le système (queue + guichet)"/>
         </tooltip>
     </Label>
-    <Label fx:id="lLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <Label fx:id="lLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="form-label"/>
 
     <Label text="Nombre moyen de clients dans la queue : " GridPane.columnIndex="0" GridPane.rowIndex="3">
         <tooltip>
             <Tooltip text="Nombre moyen de clients dans la queue, sans compter les guichets"/>
         </tooltip>
     </Label>
-    <Label fx:id="lqLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <Label fx:id="lqLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="form-label"/>
 
     <Label text="Temps moyen passé par un client dans le système : " GridPane.columnIndex="0" GridPane.rowIndex="4">
         <tooltip>
             <Tooltip text="Durée moyenne d'attente d'un client dans le système (queue + guichet)"/>
         </tooltip>
     </Label>
-    <Label fx:id="wLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <Label fx:id="wLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="form-label"/>
 
     <Label text="Temps moyen d'attente d'un client dans la queue : " GridPane.columnIndex="0" GridPane.rowIndex="5">
         <tooltip>
             <Tooltip text="Durée moyenne d'attente d'un client dans la queue, sans compter les guichets"/>
         </tooltip>
     </Label>
-    <Label fx:id="wqLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+    <Label fx:id="wqLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" styleClass="form-label"/>
 
     <Label text="Taux moyen d'utilisation de chaque guichet : " GridPane.columnIndex="0" GridPane.rowIndex="6">
         <tooltip>
             <Tooltip text="Pourcentage de temps qu'un serveur est utilisé par un client."/>
         </tooltip>
     </Label>
-    <Label fx:id="rhoLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+    <Label fx:id="rhoLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" styleClass="form-label"/>
 
-    <Label text="Nombre de serveurs minimum : " GridPane.columnIndex="0" GridPane.rowIndex="7">
+    <Label fx:id="minServersTextLabel" text="Nombre de serveurs minimum : " GridPane.columnIndex="0" GridPane.rowIndex="7">
         <tooltip>
             <Tooltip text="Le nombre de serveurs nécessaire au minimum pour que la file ne grandisse pas indéfiniment"/>
         </tooltip>
     </Label>
-    <Label fx:id="minServersLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+    <Label fx:id="minServersLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" styleClass="form-label"/>
 
 </GridPane>
